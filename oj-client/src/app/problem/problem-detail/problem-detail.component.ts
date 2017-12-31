@@ -25,7 +25,9 @@ export class ProblemDetailComponent implements OnInit, OnDestroy {
     "Python2.7":"python"
   };
 
-  subscription: Subscription;
+  subscriptionOutput: Subscription;
+  subscriptionLang: Subscription;
+  
 
   output: string = 'Output:';
 
@@ -71,10 +73,18 @@ export class ProblemDetailComponent implements OnInit, OnDestroy {
 
     this.editorUpdateService.init(this.editor);
 
-    this.subscription = this.editorUpdateService.outputSubject.subscribe(
+    this.subscriptionOutput = this.editorUpdateService.outputSubject.subscribe(
       (output:string) => {
         this.output = output;
         this.submitted = false;
+      }
+    );
+
+    this.subscriptionLang = this.editorUpdateService.langSubject.subscribe(
+      (lang:string) => {
+
+        this.editorMode = lang;
+        this.editor.getSession().setMode(`ace/mode/${this.langMapMode[this.editorMode]}`);
       }
     );
   }
@@ -90,12 +100,17 @@ export class ProblemDetailComponent implements OnInit, OnDestroy {
   onChange(){
     console.log('editor lang change', this.editorMode);
     this.editor.getSession().setMode(`ace/mode/${this.langMapMode[this.editorMode]}`);
+
     this.editor.setValue(this.defaultContent[this.editorMode],-1);
+    this.editorUpdateService.updateMode(this.editorMode);
+
+
 
   }
 
   ngOnDestroy(){
-    this.subscription.unsubscribe();
+    this.subscriptionOutput.unsubscribe();
+    this.subscriptionLang.unsubscribe();
   }
 
 }

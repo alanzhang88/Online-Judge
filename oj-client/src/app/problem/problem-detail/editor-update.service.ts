@@ -11,6 +11,7 @@ export class EditorUpdateService implements OnInit{
   editor: any;
   socket: any;
   outputSubject = new Subject<string>();
+  langSubject = new Subject<string>();
   newUser = true;
 
   constructor(private editorMarkerService:EditorMarkerService){
@@ -88,6 +89,12 @@ export class EditorUpdateService implements OnInit{
       self.outputSubject.next(`Output: \n${result.output}`);
     });
 
+    this.socket.on("setLang",(msg)=>{
+      console.log("Recv new lang", msg);
+      self.langSubject.next(msg);
+
+    });
+
     this.socket.on("disconnect",function(){
       console.log("Disconnected from server");
     });
@@ -101,6 +108,10 @@ export class EditorUpdateService implements OnInit{
 
   sendCode(msg:any){
       this.socket.emit("codeToRun",msg);
+  }
+
+  updateMode(msg:any){
+    this.socket.emit("newLang",msg);
   }
 
   ngOnInit(){

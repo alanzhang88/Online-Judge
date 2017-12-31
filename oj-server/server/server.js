@@ -61,6 +61,10 @@ io.on("connection",(socket)=>{
     });
   });
 
+  socket.on("newLang",(msg)=>{
+      console.log("a client set a new theme, sending to rest of the client to sync");
+      socket.broadcast.emit("setLang",msg);
+  });
 
   socket.on("disconnect",()=>{
     console.log("User disconnected");
