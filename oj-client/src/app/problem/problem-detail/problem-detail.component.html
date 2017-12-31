@@ -1,0 +1,38 @@
+<!-- <p>
+  problem-detail works!
+</p> -->
+
+<div class="row">
+  <div class="col-xs-12">
+    <h4>Problem Description</h4>
+    <p>
+      {{ content }}
+    </p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-3">
+    <button type="button" class="btn btn-default pull-left" (click)="onSubmit()">Submit</button>
+  </div>
+  <div class="col-xs-3 pull-right">
+    <select class="form-control" [(ngModel)]="editorMode" (change)="onChange()">
+      <option value="C++" selected>C++</option>
+      <option value="C">C</option>
+      <option value="Java">Java</option>
+      <option value="Python2.7">Python2.7</option>
+    </select>
+  </div>
+</div>
+<hr />
+<div class="row">
+  <div class="col-xs-12">
+    <div id="editor">
+    </div>
+  </div>
+</div>
+<hr />
+<div class="row">
+  <div class="col-xs-12">
+    <textarea id="result" rows="5" readonly>{{ output }}</textarea>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+@media screen{
+  #editor{
+    height: 400px;
+  }
+
+  #result{
+    min-width: 100%;
+    font-size: 18px;
+    border-width: 2px;
+    resize: none;
+  }
+
+
+}

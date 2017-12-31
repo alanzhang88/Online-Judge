@@ -1,0 +1,22 @@
+<!-- <p>
+  problem-list works!
+</p> -->
+
+<div class="row">
+  <div class="col-xs-12">
+    <button type="button" class="btn btn-success">New Problem</button>
+  </div>
+</div>
+<hr />
+<div class="row">
+  <div class="col-xs-12">
+    <a style="cursor: pointer;"
+       class="list-group-item clearfix"
+       *ngFor="let title of problemsTitle; let i = index"
+       [routerLink]="i">
+       <div class="pull-left">
+         <h6 class="list-group-item-heading">{{ i+1 }}. {{ title }}</h6>
+       </div>
+    </a>
+  </div>
+</div>
