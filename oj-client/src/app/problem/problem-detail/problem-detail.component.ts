@@ -40,6 +40,8 @@ export class ProblemDetailComponent implements OnInit, OnDestroy {
     `#include <stdio.h>\n\nint main() {\n\t//Type your C code here\n}`
   };
 
+  submitted = false;
+
   // editorMarkerService: EditorMarkerService;
 
   constructor(private problemService: ProblemService,
@@ -72,6 +74,7 @@ export class ProblemDetailComponent implements OnInit, OnDestroy {
     this.subscription = this.editorUpdateService.outputSubject.subscribe(
       (output:string) => {
         this.output = output;
+        this.submitted = false;
       }
     );
   }
@@ -81,6 +84,7 @@ export class ProblemDetailComponent implements OnInit, OnDestroy {
     console.log("Code to compile");
     console.log(msg);
     this.editorUpdateService.sendCode(msg);
+    this.submitted = true;
   }
 
   onChange(){

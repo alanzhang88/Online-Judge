@@ -12,7 +12,7 @@
 </div>
 <div class="row">
   <div class="col-xs-3">
-    <button type="button" class="btn btn-default pull-left" (click)="onSubmit()">Submit</button>
+    <button type="button" class="btn btn-default pull-left" (click)="onSubmit()" [disabled]="submitted">{{ submitted ? 'Submitting...' : 'Submit' }}</button>
   </div>
   <div class="col-xs-3 pull-right">
     <select class="form-control" [(ngModel)]="editorMode" (change)="onChange()">
