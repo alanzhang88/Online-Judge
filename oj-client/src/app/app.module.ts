@@ -14,6 +14,9 @@ import { EditorMarkerService } from "./problem/problem-detail/editor-marker.serv
 import { EditorUpdateService } from "./problem/problem-detail/editor-update.service";
 import { ProblemEditComponent } from './problem/problem-edit/problem-edit.component';
 import { ProblemEditFormComponent } from './problem/problem-edit/problem-edit-form/problem-edit-form.component';
+import { AuthModule } from "./auth/auth.module";
+import { HomeComponent } from './home/home.component';
+import { AuthService } from "./auth/auth.service";
 
 
 
@@ -26,14 +29,16 @@ import { ProblemEditFormComponent } from './problem/problem-edit/problem-edit-fo
     ProblemStartComponent,
     ProblemDetailComponent,
     ProblemEditComponent,
-    ProblemEditFormComponent
+    ProblemEditFormComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    AuthModule
   ],
-  providers: [ProblemService, EditorMarkerService, EditorUpdateService],
+  providers: [ProblemService, EditorMarkerService, EditorUpdateService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

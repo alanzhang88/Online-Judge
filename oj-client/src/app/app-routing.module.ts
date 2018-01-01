@@ -5,9 +5,10 @@ import { ProblemStartComponent } from "./problem/problem-start/problem-start.com
 import { ProblemDetailComponent } from "./problem/problem-detail/problem-detail.component";
 import { ProblemEditComponent } from "./problem/problem-edit/problem-edit.component";
 import { ProblemEditFormComponent } from "./problem/problem-edit/problem-edit-form/problem-edit-form.component";
+import { HomeComponent } from "./home/home.component";
 
 const appRoutes: Routes = [
-  {'path': '', redirectTo: '/problems', pathMatch: 'full' },
+  {'path': '', component: HomeComponent },
   {'path': 'problems', component: ProblemComponent, children:[
     {'path': '', component: ProblemStartComponent, pathMatch: 'full'},
     {'path': 'edit', component: ProblemEditComponent},

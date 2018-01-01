@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProblemService } from "../problem.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subscription } from "rxjs/Subscription";
+import { AuthService } from "../../auth/auth.service";
 
 @Component({
   selector: 'app-problem-list',
@@ -13,7 +14,10 @@ export class ProblemListComponent implements OnInit {
   problemsTitle: string[];
   problemEdit = false;
   problemChangeSubscription: Subscription;
-  constructor(private problemService: ProblemService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private problemService: ProblemService,
+              private route: ActivatedRoute,
+              private router: Router,
+              private authService: AuthService) { }
 
   ngOnInit() {
     this.problemsTitle = this.problemService.getProblemsTitle();
@@ -32,5 +36,9 @@ export class ProblemListComponent implements OnInit {
   onBack(){
     this.problemEdit = false;
     this.router.navigate(['../'],{relativeTo:this.route});
+  }
+
+  getAuthenticatStatus(){
+    return this.authService.isAuthenticated();
   }
 }

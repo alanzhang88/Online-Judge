@@ -4,7 +4,7 @@
 
 <div class="row">
   <div class="col-xs-12">
-    <button type="button" class="btn btn-success" *ngIf="!problemEdit" (click)="onManage()" [routerLink]="'edit'">Manage</button>
+    <button type="button" class="btn btn-success" *ngIf="!problemEdit" (click)="onManage()" [routerLink]="'edit'" [disabled]="!getAuthenticatStatus()">Manage</button>
     <ng-template [ngIf]="problemEdit">
       <button type="button" class="btn btn-danger" (click)="onBack()">Back</button>
       <button type="button" class="btn btn-success" [routerLink]="'edit/new'">New Problem</button>
