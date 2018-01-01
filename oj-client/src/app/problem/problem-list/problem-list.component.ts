@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProblemService } from "../problem.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Subscription } from "rxjs/Subscription";
 
 @Component({
   selector: 'app-problem-list',
@@ -9,11 +11,26 @@ import { ProblemService } from "../problem.service";
 export class ProblemListComponent implements OnInit {
 
   problemsTitle: string[];
-  constructor(private problemService: ProblemService) { }
+  problemEdit = false;
+  problemChangeSubscription: Subscription;
+  constructor(private problemService: ProblemService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     this.problemsTitle = this.problemService.getProblemsTitle();
+    this.problemChangeSubscription = this.problemService.problemChange.subscribe(
+      (newProblemTitle:string[])=>{
+        this.problemsTitle = newProblemTitle;
+      }
+    );
     // console.log(this.problemsTitle);
   }
 
+  onManage(){
+    this.problemEdit = true;
+  }
+
+  onBack(){
+    this.problemEdit = false;
+    this.router.navigate(['../'],{relativeTo:this.route});
+  }
 }

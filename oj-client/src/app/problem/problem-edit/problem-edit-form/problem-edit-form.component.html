@@ -1,0 +1,31 @@
+<!-- <p>
+  problem-edit-form works!
+</p> -->
+
+<div class="row">
+  <div class="col-xs-12">
+    <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+      <div class="row">
+        <div class="col-xs-12">
+          <button type="submit" class="btn btn-success" [disabled]="!f.valid">Save</button>
+          <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
+          <button type="button" class="btn btn-danger pull-right" (click)="onDelete()" *ngIf="!isNew()">Delete</button>
+        </div>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="col-xs-12">
+          <label for="title">Problem Title</label>
+          <input class="form-control" type="text" name="title" [ngModel]="problem.title" required />
+        </div>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="col-xs-12">
+          <label for="description">Problem Description</label>
+          <textarea class="form-control" rows="8" id="prodescription" name="description" [ngModel]="problem.content" required ></textarea>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

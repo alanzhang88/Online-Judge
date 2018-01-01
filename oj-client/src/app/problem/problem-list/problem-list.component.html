@@ -4,7 +4,11 @@
 
 <div class="row">
   <div class="col-xs-12">
-    <button type="button" class="btn btn-success">New Problem</button>
+    <button type="button" class="btn btn-success" *ngIf="!problemEdit" (click)="onManage()" [routerLink]="'edit'">Manage</button>
+    <ng-template [ngIf]="problemEdit">
+      <button type="button" class="btn btn-danger" (click)="onBack()">Back</button>
+      <button type="button" class="btn btn-success" [routerLink]="'edit/new'">New Problem</button>
+    </ng-template>
   </div>
 </div>
 <hr />
@@ -13,7 +17,8 @@
     <a style="cursor: pointer;"
        class="list-group-item clearfix"
        *ngFor="let title of problemsTitle; let i = index"
-       [routerLink]="i">
+       [routerLink]="problemEdit ? 'edit/'+i : i"
+       [routerLinkActive]="'active'">
        <div class="pull-left">
          <h6 class="list-group-item-heading">{{ i+1 }}. {{ title }}</h6>
        </div>

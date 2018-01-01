@@ -12,6 +12,8 @@ import { AppRoutingModule } from "./app-routing.module";
 import { ProblemService } from "./problem/problem.service";
 import { EditorMarkerService } from "./problem/problem-detail/editor-marker.service";
 import { EditorUpdateService } from "./problem/problem-detail/editor-update.service";
+import { ProblemEditComponent } from './problem/problem-edit/problem-edit.component';
+import { ProblemEditFormComponent } from './problem/problem-edit/problem-edit-form/problem-edit-form.component';
 
 
 
@@ -22,7 +24,9 @@ import { EditorUpdateService } from "./problem/problem-detail/editor-update.serv
     ProblemComponent,
     ProblemListComponent,
     ProblemStartComponent,
-    ProblemDetailComponent
+    ProblemDetailComponent,
+    ProblemEditComponent,
+    ProblemEditFormComponent
   ],
   imports: [
     BrowserModule,
