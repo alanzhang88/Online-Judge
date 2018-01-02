@@ -17,11 +17,11 @@
         <li><a routerLink="/">Home</a></li>
         <li><a routerLink="/problems" *ngIf="getAuthenticatStatus()">Problems</a></li>
       </ul>
-      <ul class="nav navbar-nav navbar-right" *ngIf=!getAuthenticatStatus()>
+      <ul class="nav navbar-nav navbar-right" *ngIf="!getAuthenticatStatus() && getConnectionStatus() !== 'client'">
         <li><a routerLink="/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
         <li><a routerLink="/signin"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
       </ul>
-      <ul class="nav navbar-nav navbar-right" *ngIf=getAuthenticatStatus()>
+      <ul class="nav navbar-nav navbar-right" *ngIf="getAuthenticatStatus()">
         <li><a>{{ getUserEmail() }}</a></li>
         <li><a routerLink="/signin" (click)="onSignout()"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
       </ul>

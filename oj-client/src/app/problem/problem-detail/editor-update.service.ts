@@ -9,7 +9,7 @@ declare var io: any;
 @Injectable()
 export class EditorUpdateService implements OnInit{
   editor: any;
-  socket: any;
+  socket: any = null;
   outputSubject = new Subject<string>();
   langSubject = new Subject<string>();
   newUser = true;
@@ -19,7 +19,7 @@ export class EditorUpdateService implements OnInit{
   }
 
   init(editor:any){
-    this.socket = io();
+    if(this.socket == null)this.socket = io();
     this.editor = editor;
     this.editorMarkerService.setSession(editor.getSession());
 

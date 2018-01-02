@@ -15,6 +15,7 @@ export class ProblemService implements OnInit, OnDestroy{
     problemChange = new Subject<string[]>();
     email: string = null;
     emailSubscription: Subscription;
+    connectionStatus = "host";
     private problems: Problem[] = [
       // new Problem('Two Sum','Given an array of integers, return indices of the two numbers such that they add up to a specific target.'),
       // new Problem('Reverse Intger', 'Given a 32-bit signed integer, reverse digits of an integer.')

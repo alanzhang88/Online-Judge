@@ -27,7 +27,7 @@ export class ProblemDetailComponent implements OnInit, OnDestroy {
 
   subscriptionOutput: Subscription;
   subscriptionLang: Subscription;
-  
+
 
   output: string = 'Output:';
 

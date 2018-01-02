@@ -13,10 +13,12 @@ export class HomeComponent implements OnInit {
   constructor(private problemService: ProblemService, private router: Router) { }
 
   ngOnInit() {
+    this.problemService.connectionStatus = "host";
   }
 
   onSubmit(form:NgForm){
     this.problemService.getProblems(form.value.email);
+    this.problemService.connectionStatus = "client";
     this.router.navigate(['/problems']);
   }
 

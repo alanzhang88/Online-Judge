@@ -27,4 +27,8 @@ export class HeaderComponent implements OnInit {
     this.authService.logout();
   }
 
+  getConnectionStatus(){
+    return this.problemService.connectionStatus;
+  }
+
 }
