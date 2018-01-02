@@ -111,6 +111,8 @@ export class ProblemDetailComponent implements OnInit, OnDestroy {
   ngOnDestroy(){
     this.subscriptionOutput.unsubscribe();
     this.subscriptionLang.unsubscribe();
+    this.editorUpdateService.endConnection();
+    this.editorMarkerService.resetCursor();
   }
 
 }

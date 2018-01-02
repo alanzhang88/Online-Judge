@@ -18,6 +18,7 @@ import { AuthModule } from "./auth/auth.module";
 import { HomeComponent } from './home/home.component';
 import { AuthService } from "./auth/auth.service";
 import { HttpModule } from "@angular/http";
+import { RoomService } from "./problem/room.service";
 
 
 
@@ -40,7 +41,7 @@ import { HttpModule } from "@angular/http";
     AuthModule,
     HttpModule
   ],
-  providers: [AuthService, ProblemService, EditorMarkerService, EditorUpdateService],
+  providers: [RoomService, AuthService, ProblemService, EditorMarkerService, EditorUpdateService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

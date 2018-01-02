@@ -71,6 +71,10 @@ export class EditorMarkerService{
     this.redraw();
   }
 
+  resetCursor(){
+    this.cursors = [];
+    this.added = false;
+  }
 
 
 }

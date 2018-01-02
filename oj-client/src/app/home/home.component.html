@@ -29,7 +29,8 @@
   <ng-template [ngIf]="isSignedIn()">
     <div class="row">
       <div class="col-xs-9 col-sm-7 col-md-5 col-sm-offset-1 col-md-offset-2">
-        <h4>Invite Code for your buddy: {{ getInviteCodeSubject() | async }}</h4>
+        <h4 *ngIf="getInviteCode()==null">Invite Code for your buddy: {{ getInviteCodeObservable() | async }}</h4>
+        <h4 *ngIf="getInviteCode()!=null">Invite Code for your buddy: {{ getInviteCode() }}</h4>
       </div>
       <div class="col-xs-3 col-sm-3 col-md-3 pull-right">
         <button type="button" class="btn btn-primary" (click)="onReset()">Reset</button>

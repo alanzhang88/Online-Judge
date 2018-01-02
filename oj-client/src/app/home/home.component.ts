@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ProblemService } from "../problem/problem.service";
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { RoomService } from "../problem/room.service";
 
 @Component({
   selector: 'app-home',
@@ -10,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit, OnDestroy {
 
-  constructor(private problemService: ProblemService, private router: Router) { }
+  constructor(private problemService: ProblemService, private router: Router, private roomService: RoomService) { }
 
 
   ngOnInit() {
@@ -24,6 +25,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         if(data['status'] && data.status === "ok"){
           this.problemService.getProblems(form.value.email);
           this.problemService.connectionStatus = "client";
+          this.roomService.email = form.value.email;
           this.router.navigate(['/problems']);
         }
         else{
@@ -38,8 +40,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     return this.problemService.email != null;
   }
 
-  getInviteCodeSubject(){
+  getInviteCodeObservable(){
     return this.problemService.inviteCodeObservable;
+  }
+
+  getInviteCode(){
+    return this.problemService.inviteCode;
   }
 
   onReset(){

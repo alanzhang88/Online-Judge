@@ -3,3 +3,4 @@ public/
 *~
 *.pyc
 .DS_Store
+oj-server/models/test.js

@@ -2,6 +2,7 @@
 import { Injectable, OnInit } from '@angular/core';
 import { EditorMarkerService } from "./editor-marker.service";
 import { Subject } from "rxjs/Subject";
+import { RoomService } from "../room.service";
 
 declare var io: any;
 // declare var ace: any;
@@ -14,7 +15,7 @@ export class EditorUpdateService implements OnInit{
   langSubject = new Subject<string>();
   newUser = true;
 
-  constructor(private editorMarkerService:EditorMarkerService){
+  constructor(private editorMarkerService:EditorMarkerService, private roomService: RoomService){
 
   }
 
@@ -40,7 +41,7 @@ export class EditorUpdateService implements OnInit{
 
     this.socket.on("connect",function(){
       console.log("Connected to server");
-
+      self.socket.emit("joinRoom",self.roomService.email);
     });
 
     this.socket.on("patchText",function(e){
@@ -113,6 +114,12 @@ export class EditorUpdateService implements OnInit{
 
   updateMode(msg:any){
     this.socket.emit("newLang",msg);
+  }
+
+  endConnection(){
+    this.socket.emit("end",this.roomService.email);
+    this.socket = null;
+    this.newUser = true;
   }
 
   ngOnInit(){

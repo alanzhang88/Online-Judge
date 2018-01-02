@@ -89,7 +89,7 @@ export class ProblemService implements OnInit, OnDestroy{
             if(this.connectionStatus === "host"){
               this.inviteCode = data.inviteCode;
               this.inviteCodeObserver.next(data.inviteCode);
-            }            
+            }
           }
         },
         (error) => {
@@ -207,6 +207,7 @@ export class ProblemService implements OnInit, OnDestroy{
     }
     resetInviteCode(){
       if(this.email){
+        this.inviteCode = null;
         this.http.post('/api/v1/invitecode',
         {
           email: this.email

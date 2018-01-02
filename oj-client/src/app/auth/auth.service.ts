@@ -5,6 +5,7 @@ import { Http, Response, Headers} from '@angular/http';
 import { Subject } from "rxjs/Subject";
 // import "rxjs/Rx";
 import { Problem } from "../problem/problem.model";
+import { RoomService } from "../problem/room.service";
 
 @Injectable()
 export class AuthService{
@@ -15,7 +16,7 @@ export class AuthService{
     headers = new Headers({
       'Content-Type': 'application/json'
     });
-    constructor(private router:Router, private http:Http){
+    constructor(private router:Router, private http:Http, private roomService: RoomService){
 
     }
 
@@ -54,6 +55,7 @@ export class AuthService{
           this.email = response.email;
           // this.loginSubject.next(true);
           this.emailSubject.next(response.email);
+          this.roomService.email = response.email;
 
           firebase.auth().currentUser.getToken().then(
             (token:string) =>{
