@@ -19,7 +19,8 @@ export class EditorUpdateService implements OnInit{
   }
 
   init(editor:any){
-    if(this.socket == null)this.socket = io();
+    if(this.socket != null)return;
+    this.socket = io();
     this.editor = editor;
     this.editorMarkerService.setSession(editor.getSession());
 

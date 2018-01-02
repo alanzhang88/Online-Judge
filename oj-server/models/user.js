@@ -12,6 +12,10 @@ var UserSchema = new mongoose.Schema({
       message: "It is not a valid Email"
     }
   },
+  inviteCode: {
+    type: String,
+    required: true
+  },
   problems:[
     {
       problemTitle:{
@@ -45,7 +49,7 @@ UserSchema.statics.findUserAndAddProblem = function(email,problem){
   },{
     new: true
   });
-  
+
 }
 
 UserSchema.statics.findUserAndRemoveProblem = function(email,problem){
@@ -78,6 +82,19 @@ UserSchema.statics.findUserAndUpdateProblem = function(email,oldProblem,newProbl
     new: true
   });
 
+}
+
+UserSchema.statics.findUserAndSetInviteCode = function(email,newInviteCode){
+  var User = this;
+  return User.findOneAndUpdate({
+    email: email
+  },{
+    $set:{
+      inviteCode: newInviteCode
+    }
+  },{
+    new: true
+  });
 }
 
 var User = mongoose.model("User",UserSchema);

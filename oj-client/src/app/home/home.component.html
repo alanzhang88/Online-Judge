@@ -17,8 +17,22 @@
             <label for="email">Mail</label>
             <input type="email" name="email" id="email" class="form-control" ngModel required email>
           </div>
+          <div class="form-group">
+            <label for="inviteCode">Code</label>
+            <input type="text" name="inviteCode" id="inviteCode" class="form-control" ngModel required minlength="7" maxlength="14"/>
+          </div>
           <button type="submit" class="btn btn-primary" [disabled]="!f.valid">Enter</button>
         </form>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template [ngIf]="isSignedIn()">
+    <div class="row">
+      <div class="col-xs-9 col-sm-7 col-md-5 col-sm-offset-1 col-md-offset-2">
+        <h4>Invite Code for your buddy: {{ getInviteCodeSubject() | async }}</h4>
+      </div>
+      <div class="col-xs-3 col-sm-3 col-md-3 pull-right">
+        <button type="button" class="btn btn-primary" (click)="onReset()">Reset</button>
       </div>
     </div>
   </ng-template>

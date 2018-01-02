@@ -1,12 +1,14 @@
 var { User } = require("./user");
+// const uniqid = require("uniqid");
+const shortid = require("shortid");
 
-var user = new User({email:"test@test.com",problems:[
-  {problemTitle:'Two Sum',problemDescription:'Given an array of integers, return indices of the two numbers such that they add up to a specific target.'},
-  {problemTitle:'Reverse Intger', problemDescription:'Given a 32-bit signed integer, reverse digits of an integer.'}
-],sessions:[]});
-user.save().then((user)=>{
-  console.log(user);
-});
+// var user = new User({email:"test3@test.com",inviteCode: uniqid.time() ,problems:[
+//   {problemTitle:'Two Sum',problemDescription:'Given an array of integers, return indices of the two numbers such that they add up to a specific target.'},
+//   {problemTitle:'Reverse Intger', problemDescription:'Given a 32-bit signed integer, reverse digits of an integer.'}
+// ],sessions:[]});
+// user.save().then((user)=>{
+//   console.log(user);
+// });
 
 // User.findUserAndAddProblem("test@test.com",{
 //   problemTitle: "TestProblem",
@@ -23,5 +25,7 @@ user.save().then((user)=>{
 //   problemTitle: "TestProblem1",
 //   problemDescription: "TestProblem1",
 // }).then((res)=>console.log(res));
+
+User.findUserAndSetInviteCode("test3@test.com",shortid.generate()).then((res)=>console.log(res));
 
 // process.exit();

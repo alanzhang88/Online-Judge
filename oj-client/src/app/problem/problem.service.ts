@@ -3,8 +3,9 @@ import { Injectable, OnInit, OnDestroy } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
 import { Problem } from "./problem.model";
 import { Subject } from "rxjs/Subject";
+import { Observable } from "rxjs/Observable";
 import { AuthService } from "../auth/auth.service";
-
+import "rxjs/Rx";
 import { Subscription } from "rxjs/Subscription";
 
 @Injectable()
@@ -15,7 +16,15 @@ export class ProblemService implements OnInit, OnDestroy{
     problemChange = new Subject<string[]>();
     email: string = null;
     emailSubscription: Subscription;
+
     connectionStatus = "host";
+
+    inviteCode: string = null;
+    private inviteCodeObserver;
+    inviteCodeObservable = new Observable((observer)=>{
+      this.inviteCodeObserver = observer;
+    });
+
     private problems: Problem[] = [
       // new Problem('Two Sum','Given an array of integers, return indices of the two numbers such that they add up to a specific target.'),
       // new Problem('Reverse Intger', 'Given a 32-bit signed integer, reverse digits of an integer.')
@@ -77,6 +86,10 @@ export class ProblemService implements OnInit, OnDestroy{
               problems.push(new Problem(problem.problemTitle,problem.problemDescription));
             }
             this.setProblems(problems);
+            if(this.connectionStatus === "host"){
+              this.inviteCode = data.inviteCode;
+              this.inviteCodeObserver.next(data.inviteCode);
+            }            
           }
         },
         (error) => {
@@ -192,6 +205,44 @@ export class ProblemService implements OnInit, OnDestroy{
       this.problems.splice(index,1);
       this.problemChange.next(this.getProblemsTitle());
     }
+    resetInviteCode(){
+      if(this.email){
+        this.http.post('/api/v1/invitecode',
+        {
+          email: this.email
+        },
+        {
+          headers: this.headers
+        }).subscribe(
+          (response: Response)=>{
+            let data = response.json();
+            console.log("get invitecode response", data);
+            if(data['status'] && data['status'] === "ok"){
+              console.log("Successfully reset invitecode to the database");
+              this.inviteCode = data.inviteCode;
+              this.inviteCodeObserver.next(data.inviteCode);
+            }
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      }
+    }
+    verifyInviteCode(email:string, inviteCode:string){
+      return this.http.post('/api/v1/verify',
+      {
+        email: email,
+        inviteCode: inviteCode
+      },{
+        headers: this.headers
+      }).map(
+        (response: Response) => {
+          return response.json();
+        }
+      );
+    }
+
     ngOnDestroy(){
       this.emailSubscription.unsubscribe();
     }
