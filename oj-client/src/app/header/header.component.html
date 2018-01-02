@@ -15,7 +15,7 @@
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
         <li><a routerLink="/">Home</a></li>
-        <li><a routerLink="/problems">Problems</a></li>
+        <li><a routerLink="/problems" *ngIf="getAuthenticatStatus()">Problems</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right" *ngIf=!getAuthenticatStatus()>
         <li><a routerLink="/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>

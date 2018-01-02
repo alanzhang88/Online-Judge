@@ -20,7 +20,7 @@ export class ProblemService implements OnInit, OnDestroy{
       // new Problem('Reverse Intger', 'Given a 32-bit signed integer, reverse digits of an integer.')
     ];
 
-    // current wont clean up the problem list when logout but will not update to database with operations
+
 
     constructor(private http: Http, private authService: AuthService){
       this.emailSubscription = this.authService.emailSubject.subscribe(
@@ -32,6 +32,7 @@ export class ProblemService implements OnInit, OnDestroy{
           }
           else{
             this.email = null;
+            this.setProblems([]);
           }
         }
       );
@@ -57,6 +58,7 @@ export class ProblemService implements OnInit, OnDestroy{
     }
 
     getProblems(email:string){
+      this.setProblems([]);
       this.http.post('/api/v1/problems',
       {
         operation: "getProblems",
