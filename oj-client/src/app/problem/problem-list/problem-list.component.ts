@@ -35,7 +35,7 @@ export class ProblemListComponent implements OnInit {
 
   onBack(){
     this.problemEdit = false;
-    this.router.navigate(['../'],{relativeTo:this.route});
+    this.router.navigate(['/problems']);
   }
 
   getAuthenticatStatus(){

@@ -3,6 +3,7 @@ const socketIO = require("socket.io");
 const http = require("http");
 const axios = require("axios");
 const path = require("path");
+var { router } = require("../router/rest");
 
 const publicPath = path.join(__dirname,"..","..","/public");
 var port = process.env.PORT || 3000;
@@ -13,6 +14,8 @@ var io = socketIO(server);
 
 app.use(express.static(publicPath));
 
+
+app.use("/api/v1",router);
 //catching all the request and resend to angular
 app.get("*",(req,res)=>{
   res.sendFile(publicPath+'/index.html');

@@ -17,6 +17,7 @@ import { ProblemEditFormComponent } from './problem/problem-edit/problem-edit-fo
 import { AuthModule } from "./auth/auth.module";
 import { HomeComponent } from './home/home.component';
 import { AuthService } from "./auth/auth.service";
+import { HttpModule } from "@angular/http";
 
 
 
@@ -36,9 +37,10 @@ import { AuthService } from "./auth/auth.service";
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    AuthModule
+    AuthModule,
+    HttpModule
   ],
-  providers: [ProblemService, EditorMarkerService, EditorUpdateService, AuthService],
+  providers: [AuthService, ProblemService, EditorMarkerService, EditorUpdateService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
