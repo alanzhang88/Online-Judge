@@ -11,9 +11,20 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-xs-3">
-    <button type="button" class="btn btn-default pull-left" (click)="onSubmit()" [disabled]="submitted">{{ submitted ? 'Submitting...' : 'Submit' }}</button>
+  <div class="col-xs-5">
+    <div class="btn-group btn-group-justified">
+      <div class="btn-group">
+        <button type="button" class="btn btn-default pull-left" (click)="onSubmit()" [disabled]="submitted">{{ submitted ? 'Submitting...' : 'Submit' }}</button>
+      </div>
+      <div class="btn-group">
+        <button type="button" class="btn btn-success" (click)="onSave()" >Save</button>
+      </div>
+      <div class="btn-group">
+        <button type="button" class="btn btn-danger" (click)="onReset()" >Reset</button>
+      </div>
+    </div>
   </div>
+
   <div class="col-xs-3 pull-right">
     <select class="form-control" [(ngModel)]="editorMode" (change)="onChange()">
       <option value="C++" selected>C++</option>

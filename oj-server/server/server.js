@@ -82,20 +82,25 @@ io.on("connection",(socket)=>{
         socket.to(curRoomName).broadcast.emit("setLang",msg);
     });
 
+    socket.on("updateRestoration",(msg)=>{
+      console.log("a client wants to update others local storage");
+      socket.to(curRoomName).broadcast.emit("syncRestoration",msg);
+    });
+
     socket.on("end",(email)=>{
-      socket.to(curRoomName).broadcast.emit("userdisconnect",{id:socket.id});
-      Room.decPeopleNum(email);
-      UserToRoom.removeUser(socket.id);
-      if(Room.getPeopleNum(email) === 0){
-        Room.removeRoom(email);
-      }
+
       socket.disconnect(0);
     });
 
     socket.on("disconnect",()=>{
       console.log("User disconnected");
       // delete clients[socket.id];
-
+      socket.to(curRoomName).broadcast.emit("userdisconnect",{id:socket.id});
+      Room.decPeopleNum(email);
+      UserToRoom.removeUser(socket.id);
+      if(Room.getPeopleNum(email) === 0){
+        Room.removeRoom(email);
+      }
 
     });
   });

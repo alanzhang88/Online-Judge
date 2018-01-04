@@ -47,6 +47,9 @@ export class ProblemEditFormComponent implements OnInit {
   onSubmit(form:NgForm){
     // console.log(form);
     let newProblem = new Problem(form.value.title,form.value.description);
+    if(this.problem.hasRestoration){
+      newProblem.setRestoration(this.problem.restoreLang,this.problem.restoreCode);
+    }
     if(this.route.snapshot.params['index']){
       this.problemService.updateProblem(newProblem,+this.route.snapshot.params['index']);
     }

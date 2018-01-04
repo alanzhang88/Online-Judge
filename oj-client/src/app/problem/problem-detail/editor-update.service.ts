@@ -3,6 +3,7 @@ import { Injectable, OnInit } from '@angular/core';
 import { EditorMarkerService } from "./editor-marker.service";
 import { Subject } from "rxjs/Subject";
 import { RoomService } from "../room.service";
+import { ProblemService } from "../problem.service";
 
 declare var io: any;
 // declare var ace: any;
@@ -13,6 +14,7 @@ export class EditorUpdateService implements OnInit{
   socket: any = null;
   outputSubject = new Subject<string>();
   langSubject = new Subject<string>();
+  restoreSubject = new Subject<boolean>();
   newUser = true;
 
   constructor(private editorMarkerService:EditorMarkerService, private roomService: RoomService){
@@ -97,6 +99,10 @@ export class EditorUpdateService implements OnInit{
 
     });
 
+    this.socket.on("syncRestoration",(msg)=>{
+      self.restoreSubject.next(msg);
+    });
+
     this.socket.on("disconnect",function(){
       console.log("Disconnected from server");
     });
@@ -114,6 +120,10 @@ export class EditorUpdateService implements OnInit{
 
   updateMode(msg:any){
     this.socket.emit("newLang",msg);
+  }
+
+  updateLocalCache(msg:boolean){
+    this.socket.emit("updateRestoration",msg);
   }
 
   endConnection(){

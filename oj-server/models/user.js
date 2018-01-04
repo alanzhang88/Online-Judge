@@ -25,11 +25,17 @@ var UserSchema = new mongoose.Schema({
       problemDescription:{
         type: String,
         required: true
+      },
+      hasRestoration:{
+        type: Boolean
+      },
+      restoreLang:{
+        type: String
+      },
+      restoreCode:{
+        type: String
       }
     }
-  ],
-  sessions:[
-    String
   ]
 });
 
@@ -82,6 +88,38 @@ UserSchema.statics.findUserAndUpdateProblem = function(email,oldProblem,newProbl
     new: true
   });
 
+}
+
+UserSchema.statics.findUserAndSetRestoration = function(email,problemTitle,restoreLang,restoreCode){
+  var User = this;
+  return User.findOneAndUpdate({
+    email: email,
+    "problems.problemTitle": problemTitle
+  },{
+    $set:{
+      "problems.$.hasRestoration": true,
+      "problems.$.restoreLang": restoreLang,
+      "problems.$.restoreCode": restoreCode
+    }
+  },{
+    new: true
+  });
+}
+
+UserSchema.statics.findUserAndResetRestoration = function(email,problemTitle){
+  var User = this;
+  return User.findOneAndUpdate({
+    email: email,
+    "problems.problemTitle": problemTitle
+  },{
+    $set:{
+      "problems.$.hasRestoration": false,
+      "problems.$.restoreLang": "",
+      "problems.$.restoreCode": ""
+    }
+  },{
+    new: true
+  });
 }
 
 UserSchema.statics.findUserAndSetInviteCode = function(email,newInviteCode){

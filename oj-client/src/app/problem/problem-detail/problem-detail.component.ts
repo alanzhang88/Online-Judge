@@ -4,6 +4,7 @@ import { ActivatedRoute, Params } from "@angular/router";
 import { EditorMarkerService } from "./editor-marker.service";
 import { EditorUpdateService } from "./editor-update.service";
 import { Subscription } from "rxjs/Subscription";
+import { RoomService } from "../room.service";
 
 // import ace from 'ace-builds/src-min-noconflict/ace';
 declare var ace: any;
@@ -15,6 +16,7 @@ declare var ace: any;
 })
 export class ProblemDetailComponent implements OnInit, OnDestroy {
   index:number;
+  title:string;
   content:string;
   editor: any;
   editorMode: string = 'C++';
@@ -27,7 +29,7 @@ export class ProblemDetailComponent implements OnInit, OnDestroy {
 
   subscriptionOutput: Subscription;
   subscriptionLang: Subscription;
-
+  subscriptionRestoration: Subscription;
 
   output: string = 'Output:';
 
@@ -46,7 +48,8 @@ export class ProblemDetailComponent implements OnInit, OnDestroy {
 
   // editorMarkerService: EditorMarkerService;
 
-  constructor(private problemService: ProblemService,
+  constructor(private roomService: RoomService,
+              private problemService: ProblemService,
               private route: ActivatedRoute,
               private editorMarkerService: EditorMarkerService,
               private editorUpdateService: EditorUpdateService) {
@@ -55,19 +58,43 @@ export class ProblemDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
+    let params = this.route.snapshot.params;
+    this.index = +params['index'];
+    this.title = this.problemService.getProblemTitleByIndex(this.index);
+    this.content = this.problemService.getProblemContentByIndex(this.index);
+
     this.editor = ace.edit("editor");
     // console.log(this.editor);
     this.editor.setTheme('ace/theme/monokai');
-    this.editor.getSession().setMode(`ace/mode/${this.langMapMode[this.editorMode]}`);
     this.editor.$blockScrolling = Infinity;
-    this.editor.setValue(this.defaultContent[this.editorMode],-1);
+    if(this.problemService.hasProblemRestorationByIndex(this.index)){
+      this.editorMode = this.problemService.getProblemRestoreLangByIndex(this.index);
+      this.editor.getSession().setMode(`ace/mode/${this.langMapMode[this.editorMode]}`);
+      this.editor.setValue(this.problemService.getProblemRestoreCodeByIndex(this.index),-1);
+    }
+    else{
+      this.editor.getSession().setMode(`ace/mode/${this.langMapMode[this.editorMode]}`);
+      this.editor.setValue(this.defaultContent[this.editorMode],-1);
+    }
     this.editorMarkerService.setSession(this.editor.getSession());
 
     this.route.params.subscribe(
       (params: Params) => {
         this.index = +params['index'];
         this.content = this.problemService.getProblemContentByIndex(this.index);
-        this.editor.setValue(this.defaultContent[this.editorMode],-1);
+        this.title = this.problemService.getProblemTitleByIndex(this.index);
+        if(this.problemService.hasProblemRestorationByIndex(this.index)){
+          let lang = this.problemService.getProblemRestoreLangByIndex(this.index);
+          if(this.editorMode !== lang){
+            this.editorMode = lang;
+            this.editor.getSession().setMode(`ace/mode/${this.langMapMode[this.editorMode]}`);
+          }
+          this.editor.setValue(this.problemService.getProblemRestoreCodeByIndex(this.index),-1);
+        }
+        else{
+          this.editor.setValue(this.defaultContent[this.editorMode],-1);
+        }
+        this.output = 'Output:';
       }
     );
 
@@ -87,6 +114,18 @@ export class ProblemDetailComponent implements OnInit, OnDestroy {
         this.editor.getSession().setMode(`ace/mode/${this.langMapMode[this.editorMode]}`);
       }
     );
+
+    this.subscriptionRestoration = this.editorUpdateService.restoreSubject.subscribe(
+      (hasRestoration: boolean) => {
+        console.log("recv a hasRestoration update");
+        if(hasRestoration){
+          this.problemService.setProblemRestorationByIndex(this.index,this.editorMode,this.editor.getValue());
+        }
+        else{
+          this.problemService.resetProblemRestorationByIndex(this.index);
+        }
+      }
+    );
   }
 
   onSubmit(){
@@ -100,12 +139,27 @@ export class ProblemDetailComponent implements OnInit, OnDestroy {
   onChange(){
     console.log('editor lang change', this.editorMode);
     this.editor.getSession().setMode(`ace/mode/${this.langMapMode[this.editorMode]}`);
-
-    this.editor.setValue(this.defaultContent[this.editorMode],-1);
+    if(this.problemService.hasProblemRestorationByIndex(this.index) && this.problemService.getProblemRestoreLangByIndex(this.index) === this.editorMode){
+      this.editor.setValue(this.problemService.getProblemRestoreCodeByIndex(this.index),-1);
+    }
+    else{
+      this.editor.setValue(this.defaultContent[this.editorMode],-1);
+    }
     this.editorUpdateService.updateMode(this.editorMode);
 
+  }
 
+  onSave(){
+    this.problemService.setProblemRestorationByIndex(this.index,this.editorMode,this.editor.getValue());
+    this.roomService.setRestorationToDB(this.title,this.editorMode,this.editor.getValue());
+    this.editorUpdateService.updateLocalCache(true);
+  }
 
+  onReset(){
+    this.problemService.resetProblemRestorationByIndex(this.index);
+    this.roomService.resetRestorationToDB(this.title);
+    this.editor.setValue(this.defaultContent[this.editorMode],-1);
+    this.editorUpdateService.updateLocalCache(false);
   }
 
   ngOnDestroy(){

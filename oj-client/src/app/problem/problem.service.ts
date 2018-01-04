@@ -83,7 +83,11 @@ export class ProblemService implements OnInit, OnDestroy{
           if(data['status'] && data['status'] === "ok"){
             let problems : Problem[] = [];
             for (let problem of data.problems){
-              problems.push(new Problem(problem.problemTitle,problem.problemDescription));
+              let newProblem = new Problem(problem.problemTitle,problem.problemDescription);
+              if(problem.hasRestoration){
+                newProblem.setRestoration(problem.restoreLang,problem.restoreCode);
+              }
+              problems.push(newProblem);
             }
             this.setProblems(problems);
             if(this.connectionStatus === "host"){
@@ -111,12 +115,37 @@ export class ProblemService implements OnInit, OnDestroy{
       return this.problems[index].content;
     }
 
+    getProblemTitleByIndex(index:number){
+      return this.problems[index].title;
+    }
+
     getProblemByIndex(index:number){
       return this.problems[index];
     }
 
+    hasProblemRestorationByIndex(index:number){
+      return this.problems[index].hasRestoration;
+    }
+
+    getProblemRestoreLangByIndex(index:number){
+      return this.problems[index].restoreLang;
+    }
+
+    getProblemRestoreCodeByIndex(index:number){
+      return this.problems[index].restoreCode;
+    }
+
+    setProblemRestorationByIndex(index:number, restoreLang: string, restoreCode: string){
+      this.problems[index].setRestoration(restoreLang,restoreCode);
+    }
+
+    resetProblemRestorationByIndex(index:number){
+      this.problems[index].resetRestoration();
+    }
+
     //need to implement no duplicate problem titles
     appendProblem(problem:Problem){
+      console.log("Appending new problem", problem);
       this.problems.push(problem);
       this.problemChange.next(this.getProblemsTitle());
       if(this.email){
@@ -126,7 +155,10 @@ export class ProblemService implements OnInit, OnDestroy{
           email: this.email,
           problem: {
             problemTitle: problem.title,
-            problemDescription: problem.content
+            problemDescription: problem.content,
+            hasRestoration: false,
+            restoreCode: '',
+            restoreLang: ''
           }
         },
         {
@@ -156,7 +188,10 @@ export class ProblemService implements OnInit, OnDestroy{
           },
           newProblem: {
             problemTitle: newProblem.title,
-            problemDescription: newProblem.content
+            problemDescription: newProblem.content,
+            hasRestoration: newProblem.hasRestoration,
+            restoreLang: newProblem.hasRestoration ? newProblem.restoreLang : '',
+            restoreCode: newProblem.hasRestoration ? newProblem.restoreCode : ''
           }
         },
         {
@@ -174,6 +209,7 @@ export class ProblemService implements OnInit, OnDestroy{
           }
         );
       }
+      console.log("Updating new problem", newProblem);
       this.problems[index] = newProblem;
       this.problemChange.next(this.getProblemsTitle());
     }

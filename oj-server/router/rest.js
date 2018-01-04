@@ -88,6 +88,30 @@ router.post("/problems",function(req,res){
       res.status(400).send(e);
     });
   }
+  else if(req.body.operation === "setRestoration"){
+    User.findUserAndSetRestoration(req.body.email,req.body.problemTitle,req.body.restoreLang,req.body.restoreCode).then(
+      (dbres)=>{
+        res.status(200).send({
+          email: dbres.email,
+          status: "ok"
+        });
+      }
+    ).catch((e)=>{
+      res.status(400).send(e);
+    });
+  }
+  else if(req.body.operation === "resetRestoration"){
+    User.findUserAndResetRestoration(req.body.email,req.body.problemTitle).then(
+      (dbres)=>{
+        res.status(200).send({
+          email: dbres.email,
+          status: "ok"
+        });
+      }
+    ).catch((e)=>{
+      res.status(400).send(e);
+    });
+  }
   else {
     res.status(400).send({
       errorMessage: "Unknown operation!"

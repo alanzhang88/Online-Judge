@@ -73,6 +73,7 @@ export class AuthService{
       this.token = null;
       this.email = null;
       this.emailSubject.next();
+      this.roomService.email = null;
     }
 
     getToken(){

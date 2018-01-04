@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.problemService.connectionStatus = "host";
+    // this.roomService.email = null;
   }
 
   onSubmit(form:NgForm){
