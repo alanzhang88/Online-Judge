@@ -19,6 +19,7 @@ import { HomeComponent } from './home/home.component';
 import { AuthService } from "./auth/auth.service";
 import { HttpModule } from "@angular/http";
 import { RoomService } from "./problem/room.service";
+import { ProblemGuard } from "./problem/problem-guard-service";
 
 
 
@@ -41,7 +42,7 @@ import { RoomService } from "./problem/room.service";
     AuthModule,
     HttpModule
   ],
-  providers: [RoomService, AuthService, ProblemService, EditorMarkerService, EditorUpdateService],
+  providers: [RoomService, AuthService, ProblemService, EditorMarkerService, EditorUpdateService, ProblemGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

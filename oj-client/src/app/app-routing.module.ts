@@ -6,10 +6,11 @@ import { ProblemDetailComponent } from "./problem/problem-detail/problem-detail.
 import { ProblemEditComponent } from "./problem/problem-edit/problem-edit.component";
 import { ProblemEditFormComponent } from "./problem/problem-edit/problem-edit-form/problem-edit-form.component";
 import { HomeComponent } from "./home/home.component";
+import { ProblemGuard } from "./problem/problem-guard-service";
 
 const appRoutes: Routes = [
   {'path': '', component: HomeComponent },
-  {'path': 'problems', component: ProblemComponent, children:[
+  {'path': 'problems', component: ProblemComponent, canActivate:[ProblemGuard], children:[
     {'path': '', component: ProblemStartComponent, pathMatch: 'full'},
     {'path': 'edit', component: ProblemEditComponent},
     {'path': 'edit/new', component: ProblemEditFormComponent},
