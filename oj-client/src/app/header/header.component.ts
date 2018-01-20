@@ -9,10 +9,16 @@ import { ProblemService } from "../problem/problem.service";
 })
 export class HeaderComponent implements OnInit {
 
+  isIn: boolean = false;
+
   constructor(private authService:AuthService, private problemService: ProblemService) { }
 
   ngOnInit() {
 
+  }
+
+  toggleState(){
+    this.isIn = this.isIn === false ? true : false;
   }
 
   getAuthenticatStatus(){
