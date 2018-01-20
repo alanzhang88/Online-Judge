@@ -1,0 +1,26 @@
+{
+  "name": "angular-oj",
+  "version": "1.0.0",
+  "description": "Revamped the frontend with angular, will add more functions with angular",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "preinstall": "npm install --prefix oj-client",
+    "postinstall": "npm install --prefix oj-server",
+    "start": "cd oj-server && npm start"
+  },
+  "engines": {
+    "node": "9.3.0",
+    "npm": "5.6.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alanzhang88/angular-OJ.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alanzhang88/angular-OJ/issues"
+  },
+  "homepage": "https://github.com/alanzhang88/angular-OJ#readme"
+}
